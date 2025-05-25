@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UPI Subscription Payment - Movie Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-light: #f9fafb;
+      --bg-dark: #1e1e2f;
+      --text-light: #111;
+      --text-dark: #fff;
+      --primary: #fbbf24;
+      --glass: rgba(255, 255, 255, 0.1);
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.4s ease;
+    }
+    a {
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent; /* Removes blue highlight on mobile */
+}
+
+a:focus,
+a:active {
+  outline: none; /* Removes outline when link is tapped/clicked */
+}
+    .container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+   .logo {
+  width: 70px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.logo:hover {
+  box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.8);
+  transform: scale(1.1);
+}
+
+  .title {
+  font-size: 42px;
+  font-weight: 900;
+  color: red;
+  letter-spacing: 1.5px;
+  margin: 0;
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeInZoom 2s ease-out forwards, glowPulse 4s ease-in-out infinite 2s;
+  text-shadow:
+    /* Simulate white border */
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff,
+    /* Red glow layers */
+    0 0 10px red,
+    0 0 20px red,
+    0 0 30px white;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.title:hover {
+  transform: scale(1.08);
+  text-shadow:
+    -2px -2px 0 #fff,
+    2px -2px 0 #fff,
+    -2px 2px 0 #fff,
+    2px 2px 0 #fff,
+    0 0 25px red,
+    0 0 35px white,
+    0 0 45px white;
+}
+
+/* Entry Animation */
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+    text-shadow: none;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Glow Pulse Animation */
+@keyframes glowPulse {
+  0%, 100% {
+    text-shadow:
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff,
+      0 0 15px red,
+      0 0 25px red,
+      0 0 35px white;
+  }
+  50% {
+    text-shadow:
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff,
+      0 0 5px white,
+      0 0 10px red,
+      0 0 15px white;
+  }
+}
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      max-width: 420px;
+      width: 100%;
+      color: var(--text-dark);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .light-mode .card {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-light);
+    }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    select,
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode select */
+select {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Light mode select */
+.light-mode select {
+  background: #f1f5f9;
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+/* Button styles */
+button {
+  background: var(--primary);
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Button hover */
+button:hover {
+  background: #facc15;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Button active/focus - remove blue effect */
+button:focus,
+button:active {
+  outline: none;
+  box-shadow: none;
+}
+    img.qr {
+      border-radius: 10px;
+      margin-bottom: 10px;
+      max-width: 100%;
+    }
+    .note {
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+    .light-mode .note {
+      background: #e2e8f0;
+    }
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #22c55e;
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 8px;
+      display: none;
+      z-index: 999;
+    }
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+    }
+    .toggle-btn.dark {
+      background: #000;
+      color: #fff;
+    }
+    .toggle-btn.light {
+      background: #fff;
+      color: #000;
+    }
+    
+    #upiId {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 10px;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+    }
+    #upiId::after {
+      content: "Tap here to copy";
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #ccc;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 4px 8px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    #upiId:hover::after {
+      opacity: 1;
+    }
+    #upiId.copied::after {
+      content: "Copied!";
+      color: #22c55e;
+    }
+    @media (max-width: 480px) {
+      .card {
+        padding: 20px;
+      }
+      .toggle-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+      }
+    }
+    input.error {
+  border: 1px solid red;
+  background-color: #ffdddd;
+  
+}
+#telegram-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #0088cc;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  z-index: 1000;
+}
+#telegram-btn svg {
+  width: 28px;
+  height: 28px;
+}
+  </style>
+</head>
+<body oncontextmenu="return false;">
+  <button id="toggleBtn" class="toggle-btn dark" onclick="toggleMode()">☀️</button>
+
+  <div class="card">
+    
+  <div class="container">
+  <a href="https://t.me/hks_movie_bot" target="_blank" style="text-decoration: none;">
+    <img src="movie hub logo.jpg" alt="Movie Hub Logo" class="logo" />
+  </a>
+  <a href="https://t.me/main_movie_hub" target="_blank" style="text-decoration: none; color: inherit;">
+    <div class="title">MOVIE HUB</div>
+  </a>
+</div>
+
+    <h2>Activate Premium Access</h2>
+   <select id="amount" onchange="generateQR()">
+  <option value="5">₹05 - 1 Week</option>
+  <option value="20">₹20 - 1 Month</option>
+  <option value="30">₹30 - 2 Months</option>
+  <option value="50">₹50 - 3 Months</option>
+  <option value="70">₹70 - 6 Months</option>
+  <option value="100">₹100 - 12 Months</option>
+  <option value="custom">Custom Amount</option>
+</select>
+
+<div id="customAmountDiv" style="display: none;">
+  <label for="customAmountInput">Enter Custom Amount:</label>
+  <input type="number" id="customAmountInput" oninput="generateQR()" min="1">
+  <p style="color:red ;">
+      * Your period of premium subscription is set as per the amount you pay.
+    </p>
+</div>
+    <div id="upiId"> UPI ID : harmish@superyes</div>
+
+    <img id="qrCode" class="qr" src="" alt="UPI QR Code" width="250" height="250" crossorigin="anonymous" />
+
+    <button onclick="downloadQR()">Download QR Code</button>
+   
+   <button onclick="showForm()" style="
+  margin-top: 5px;
+  padding: 10px 20px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 0px;
+">
+  Payment Done
+</button>
+<div id="confirmation-msg" style="color: white; font-weight: bold; margin-top: 15px; display: none;"></div>
+
+<div id="payment-form" style="
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.6s ease;
+  margin: 30px auto;
+  background-color: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 400px;
+  text-align: center;
+">
+  <h3 style="font-size: 24px; margin-bottom: 15px;">Confirm Your Payment</h3>
+  <p>Enter your Telegram username and UPI Transaction ID</p>
+
+  <input type="text" id="username" placeholder="Telegram Username" style="width: 90%; padding: 10px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccc;"><br>
+  <input type="text" id="txnId" placeholder="UPI Transaction ID" style="width: 90%; padding: 10px; margin: 8px 0 15px; border-radius: 6px; border: 1px solid #ccc;"><br>
+
+  <button onclick="submitPayment()" style="padding: 10px 20px; background-color: red; color: white; border: none; border-radius: 6px; cursor: pointer;">
+    Submit & Send Screenshot
+  </button>
+</div>
+
+    <div class="note">
+      <strong>How to Pay:</strong><br />
+      • Take a screenshot or download this QR code<br />
+      • Open your UPI app<br />
+      • Choose “Scan from Gallery”<br />
+      • Select the saved QR image to complete the payment<br />
+      <strong>After Payment:</strong><br />
+      • Click the "Payment Done" button below<br/>
+      • Fill in your payment details and click Submit<br />
+      • You will be redirected to my Telegram account<br />
+      • Send a message with your payment screenshot<br />
+      • Give us sometime to add you in PREMIUM LIST.<br /><br />
+    </div>
+  <style>
+  footer {
+    background-color: #121212;  /* dark background */
+    color: #cccccc;             /* light gray text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 10px 0px;
+    text-align: center;
+    border-top: 3px solid #ff4500; /* accent orange */
+  }
+
+  footer .site-name {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #ff4500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  footer small {
+    font-size: 0.8rem;
+    color: #555555;
+    display: block;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 480px) {
+    footer .site-name {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+
+<footer>
+  <div class="site-name">MovieHub</div>
+  <small>© 2025 Harmish. All rights reserved.</small>
+</footer>
+  </div>
+  
+<a href="https://t.me/Mr_HKs" target="_blank" id="telegram-btn" title="Contact Support on Telegram">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+    <circle cx="120" cy="120" r="120" fill="#0088cc"/>
+    <path fill="#ffffff" d="M180.6 77.8l-25.9 122.2c-2 9-7.2 11.3-14.6 7.1l-40.5-29.9-19.5 18.8c-2.2 2.2-4 4-8.2 4l3-42.7 77.8-70.3c3.4-3-0.7-4.7-5.3-1.7L78.6 138.3l-41.1-13c-8.9-2.8-9-8.9 1.8-13.2L171 70.5c7.9-2.9 14.8 1.9 11.4 7.3z"/>
+  </svg>
+</a>
+
+
+  <div id="toast">QR code downloaded!</div>
+  
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+
+  <script>
+    const upiId = "harmish@superyes";
+    const name = "PremiumAccess";
+    let Amt = 0 ;
+
+    const upiIdElem = document.getElementById("upiId");
+    upiIdElem.addEventListener("click", () => {
+      navigator.clipboard.writeText(upiId)
+        .then(() => {
+          upiIdElem.classList.add("copied");
+          setTimeout(() => upiIdElem.classList.remove("copied"), 1500);
+        });
+    });
+
+    function generateQR() {
+  const amountSelect = document.getElementById("amount");
+  const customAmountDiv = document.getElementById("customAmountDiv");
+
+  if (amountSelect.value === "custom") {
+    customAmountDiv.style.display = "block";
+  } else {
+    customAmountDiv.style.display = "none";
+  }
+
+  let amount = amountSelect.value;
+  if (amount === "custom") {
+    amount = document.getElementById("customAmountInput").value||1;
+  }
+  console.log("Final amount:", amount);
+  Amt= amount;
+  
+  const tn = "MOVIE HUB SUBSCRIPTION";
+  const upiURL = `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR&tn=${encodeURIComponent(tn)}`;
+  console.log("UPI URL:", upiURL);
+  
+  const size = 500;
+  const logoSize = 100;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  
+  const qr = new QRious({
+    element: canvas,
+    value: upiURL,
+    size: size,
+    level: 'H'
+  });
+  
+  const ctx = canvas.getContext("2d");
+  
+  const logo = new Image();
+  logo.crossOrigin = "anonymous";
+  logo.src = "movie hub logo.jpg";
+  
+  logo.onload = function() {
+    const centerX = (canvas.width - logoSize) / 2;
+    const centerY = (canvas.height - logoSize) / 2;
+    
+    // Draw circular clip and logo
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(centerX + logoSize / 2, centerY + logoSize / 2, logoSize / 2, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(logo, centerX, centerY, logoSize, logoSize);
+    ctx.restore();
+    
+    // Draw white border around logo
+    ctx.beginPath();
+    ctx.arc(centerX + logoSize / 2, centerY + logoSize / 2, logoSize / 2 + 4, 0, Math.PI * 2);
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 8;
+    ctx.stroke();
+    
+    // Draw white rectangle behind amount text to improve visibility
+    const text = `₹${amount}`;
+const textX = canvas.width / 2;
+const textY = centerY + logoSize + 25; // Space below logo
+
+ctx.font = "bold 60px Arial";
+ctx.textAlign = "center";
+ctx.textBaseline = "top";
+
+// White border around text
+ctx.lineWidth = 26;
+ctx.strokeStyle = "white";
+ctx.strokeText(text, textX, textY);
+
+// Solid black fill
+ctx.fillStyle = "#000";
+ctx.fillText(text, textX, textY);
+    
+    // Set the QR image source from canvas
+    document.getElementById("qrCode").src = canvas.toDataURL("image/png", 1.0);
+  };
+}
+
+    function downloadQR() {
+  const img = document.getElementById("qrCode");
+  if (!img.src) {
+    alert("Please generate the QR code first.");
+    return;
+  }
+  
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  const image = new Image();
+  
+  image.crossOrigin = "Anonymous"; // Attempt to avoid CORS issues
+  image.src = img.src;
+  
+  image.onload = function() {
+    canvas.width = image.width;
+    canvas.height = image.height;
+    context.drawImage(image, 0, 0);
+    
+    canvas.toBlob(function(blob) {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "UPI-QR-Code.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast();
+    });
+  };
+  
+  image.onerror = function() {
+    alert("Unable to download due to cross-origin restrictions.");
+  };
+}
+
+    function showToast() {
+      const toast = document.getElementById("toast");
+      toast.style.display = "block";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 3000);
+    }
+
+    function toggleMode() {
+      const body = document.body;
+      const toggleBtn = document.getElementById("toggleBtn");
+
+      body.classList.toggle("light-mode");
+      const isLight = body.classList.contains("light-mode");
+
+      toggleBtn.classList.toggle("light", isLight);
+      toggleBtn.classList.toggle("dark", !isLight);
+      toggleBtn.textContent = isLight ? "🌙" : "☀️";
+    }
+
+    window.onload = () => {
+      generateQR();
+    };
+  function showForm() {
+    const form = document.getElementById("payment-form");
+    form.style.opacity = "1";
+    form.style.maxHeight = "1000px";
+    form.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function submitPayment() {
+  const usernameInput = document.getElementById("username");
+  const txnIdInput = document.getElementById("txnId");
+  const confirmationMsg = document.getElementById("confirmation-msg");
+
+  const username = usernameInput.value.trim();
+  const txnId = txnIdInput.value.trim();
+
+  // Reset styles and hide message
+  usernameInput.classList.remove("error");
+  txnIdInput.classList.remove("error");
+  confirmationMsg.style.display = "none";
+  confirmationMsg.textContent = "";
+
+  if (!username || !txnId) {
+    if (!username) usernameInput.classList.add("error");
+    if (!txnId) txnIdInput.classList.add("error");
+    alert("Please fill in both fields.");
+    return;
+  }
+
+  // Show confirmation message
+  confirmationMsg.textContent = `Thank you, @${username}. Redirecting to Telegram to send screenshot...`;
+  confirmationMsg.style.display = "block";
+
+  // Hide form smoothly
+  const form = document.getElementById("payment-form");
+  form.style.opacity = "0";
+  form.style.maxHeight = "0";
+
+  // Redirect to Telegram after 3 seconds delay
+  const message = `👋 Hi there!%0A%0A✅ I have successfully completed the payment.%0A%0A📱 Telegram Username: %60@${encodeURIComponent(username)}%60%0A💳 Transaction ID: %60${encodeURIComponent(txnId)})}%60%0A💰 Amount Paid: %60₹${Amt}%60%0A%0A📸 I will send the payment screenshot shortly.%0A%0A🙏 Thank you!`;
+  const tgLink = `https://t.me/Mr_HKs?text=${message}`;
+
+  setTimeout(() => {
+    window.open(tgLink, "_blank");
+  }, 2000);
+}
+
+const btn = document.getElementById('telegram-btn');
+  let isDragging = false, offsetX = 0, offsetY = 0;
+
+  function startDrag(x, y) {
+    const rect = btn.getBoundingClientRect();
+    offsetX = x - rect.left;
+    offsetY = y - rect.top;
+    isDragging = true;
+  }
+
+  function doDrag(x, y) {
+    if (!isDragging) return;
+    btn.style.left = (x - offsetX) + 'px';
+    btn.style.top = (y - offsetY) + 'px';
+    btn.style.right = 'auto';
+    btn.style.bottom = 'auto';
+  }
+
+  function endDrag() {
+    isDragging = false;
+  }
+
+  // Mouse events
+  btn.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    startDrag(e.clientX, e.clientY);
+  });
+  document.addEventListener('mousemove', (e) => {
+    doDrag(e.clientX, e.clientY);
+  });
+  document.addEventListener('mouseup', endDrag);
+
+  // Touch events
+  btn.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    startDrag(touch.clientX, touch.clientY);
+  });
+  document.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    doDrag(touch.clientX, touch.clientY);
+  });
+  document.addEventListener('touchend', endDrag);
+
+</script>
+
+  
+
+</body>
+</html>
